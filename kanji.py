@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+Kanji
+
+Author: Paul Goins <general@vultaire.net>
+License: GNU GPL v2 or later
+
+"""
+
 from Tkinter import Tk, Frame, Label
 import os, gettext, random
 gettext.install("net.vultaire.kanji")
