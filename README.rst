@@ -19,6 +19,10 @@ Syntax::
 
   kanji.py <utf-8 encoded data file>
 
+The data file should have one entry per line.  Lines are not limited
+to single characters, in case you wish to study words or something
+other than Kanji.
+
 **Note:** currently if no file is provided, a dummy data list is used
 instead.
 
