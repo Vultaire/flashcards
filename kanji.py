@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from Tkinter import Tk, Frame, Label
-import gettext, random
+import os, gettext, random
 gettext.install("net.vultaire.kanji")
 
 
@@ -32,6 +32,10 @@ class MainWindow(object):
         # Update kanji tracking
         self.reset_kanji()
         self.update_kanji()
+
+        # Windows-only: set always-on-top
+        if os.name == "nt":
+            self.set_always_on_top()
 
     def reset_kanji(self):
         """
@@ -86,6 +90,9 @@ class MainWindow(object):
 
         refresh_ms = int(self.refresh_interval * 1000)
         self.root.after(refresh_ms, self.update_kanji)
+
+    def set_always_on_top(self):
+        self.root.wm_attributes("-topmost", 1)
 
 
 def main():
