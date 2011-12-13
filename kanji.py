@@ -13,6 +13,9 @@ from Tkinter import Tk, Frame, Label
 import argparse, os, gettext, random
 gettext.install("net.vultaire.kanji")
 
+PROGRAM_NAME="Kanji"
+VERSION="0.2"
+
 
 class EmptyList(Exception):
     pass
@@ -20,7 +23,7 @@ class EmptyList(Exception):
 
 class MainWindow(object):
 
-    def __init__(self, root, data, interval, font_face, font_size):
+    def __init__(self, root, data, interval, font_face, font_size, on_top):
         # GUI display
         self.root = root
         frame = Frame(root)
@@ -42,9 +45,8 @@ class MainWindow(object):
         self.reset_kanji()
         self.update_kanji()
 
-        # Windows-only: set always-on-top
-        if os.name == "nt":
-            self.set_always_on_top()
+        if on_top:
+            self.root.wm_attributes("-topmost", 1)
 
     def reset_kanji(self):
         """
@@ -100,12 +102,11 @@ class MainWindow(object):
         refresh_ms = int(self.refresh_interval * 1000)
         self.root.after(refresh_ms, self.update_kanji)
 
-    def set_always_on_top(self):
-        self.root.wm_attributes("-topmost", 1)
-
 
 def parse_args():
-    ap = argparse.ArgumentParser()
+    ap = argparse.ArgumentParser(
+        description=_("Randomly displays characters or words in a window, "
+                      "refreshing every 30 seconds or so."))
     ap.add_argument("-f", "--font-face", default=None,
         help=_("Specify font face."))
     ap.add_argument("-s", "--font-size", type=int, default=100,
@@ -113,6 +114,10 @@ def parse_args():
     ap.add_argument("-i", "--interval", type=int, default=30,
         help=_("Specify how long to wait before changing entries.  "
                "(Default: %(default)s)"))
+    ap.add_argument("-t", "--on-top", action="store_true", default=False,
+        help=_("Make the window stay always on top."))
+    ap.add_argument("-v", "--version", action="store_true", default=False,
+        help=_("Show version and exit."))
     ap.add_argument("filename",
         help=_("A UTF-8 encoded file, containing one line per character "
                "or word for review."))
@@ -122,6 +127,9 @@ def main():
     import sys
 
     options = parse_args()
+    if options.version:
+        print "%s v%s" % (PROGRAM_NAME, VERSION)
+        sys.exit(0)
 
     with open(options.filename) as infile:
         data = infile.read()
@@ -130,7 +138,7 @@ def main():
     root = Tk()
     root.title(_("Kanji"))
     window = MainWindow(root, data, options.interval, options.font_face,
-        options.font_size)
+        options.font_size, options.on_top)
     root.mainloop()
 
 if __name__ == "__main__":
