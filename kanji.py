@@ -10,7 +10,7 @@ License: GNU GPL v2 or later
 """
 
 from Tkinter import Tk, Frame, Label
-import os, gettext, random
+import argparse, os, gettext, random
 gettext.install("net.vultaire.kanji")
 
 
@@ -20,13 +20,14 @@ class EmptyList(Exception):
 
 class MainWindow(object):
 
-    def __init__(self, root, data, interval=30):
+    def __init__(self, root, data, interval, font_face, font_size):
         # GUI display
         self.root = root
         frame = Frame(root)
         frame.pack()
 
-        self.kanji = Label(frame, font=(None,100))
+        font = (font_face, font_size)
+        self.kanji = Label(frame, font=font)
         self.kanji.pack()
 
         # Kanji refresh interval, in seconds
@@ -103,26 +104,33 @@ class MainWindow(object):
         self.root.wm_attributes("-topmost", 1)
 
 
+def parse_args():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-f", "--font-face", default=None,
+        help=_("Specify font face."))
+    ap.add_argument("-s", "--font-size", type=int, default=100,
+        help=_("Specify font size in points.  (Default: %(default)s)"))
+    ap.add_argument("-i", "--interval", type=int, default=30,
+        help=_("Specify how long to wait before changing entries.  "
+               "(Default: %(default)s)"))
+    ap.add_argument("filename",
+        help=_("A UTF-8 encoded file, containing one line per character "
+               "or word for review."))
+    return ap.parse_args()
+
 def main():
     import sys
 
-    if len(sys.argv) > 1:
-        with open(sys.argv[1]) as infile:
-            data = infile.read()
+    options = parse_args()
+
+    with open(options.filename) as infile:
+        data = infile.read()
         data = [s.decode("utf-8") for s in data.splitlines()]
-    else:
-        test_data = [
-            u"鯨",
-            u"食事",
-            u"勉強",
-            u"春夏秋冬",
-            u"甘",
-            ]
-        data = test_data
 
     root = Tk()
     root.title(_("Kanji"))
-    window = MainWindow(root, data, interval=30)
+    window = MainWindow(root, data, options.interval, options.font_face,
+        options.font_size)
     root.mainloop()
 
 if __name__ == "__main__":
