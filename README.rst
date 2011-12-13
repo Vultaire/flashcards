@@ -27,8 +27,9 @@ inclined.
 Requirements
 ============
 
-- Windows: Python 2.7.  See note below.
-- Linux users: Python 2.7 with Tkinter, or Python 2.6 with Tkinter and argparse
+You must have Python 2.7 with Tkinter, or Python 2.6 with Tkinter and
+argparse.  The program has been tested to various degrees on Windows
+and Linux.
 
 **Note:** This tool **must** have its arguments supplied via the
 command line, or via a wrapper script; there are no interactive
