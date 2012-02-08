@@ -140,7 +140,7 @@ def main():
     with open(options.filename) as infile:
         reader = csv.reader(infile)
         data = [tuple([col.decode("utf-8") for col in row])
-                for row in reader]
+                for row in reader if len(row) > 0]
 
     root = Tk()
     root.title(_("Kanji"))
