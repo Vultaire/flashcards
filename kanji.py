@@ -31,6 +31,7 @@ class MainWindow(object):
 
         font = (font_face, font_size)
         self.kanji = Label(frame, font=font)
+        self.kanji.bind("<Button-1>", self.on_click)
         self.kanji.pack()
 
         # Kanji refresh interval, in seconds
@@ -86,6 +87,7 @@ class MainWindow(object):
             self.reset_kanji()
 
         self.current = kanji
+        self.current_index = 0
         return kanji
 
     def update_kanji(self):
@@ -97,10 +99,14 @@ class MainWindow(object):
 
         """
         kanji = self.pull_next_kanji()
-        self.kanji.configure(text=kanji)
+        self.kanji.configure(text=kanji[0])
 
         refresh_ms = int(self.refresh_interval * 1000)
         self.root.after(refresh_ms, self.update_kanji)
+
+    def on_click(self, event):
+        self.current_index = (self.current_index + 1) % len(self.current)
+        self.kanji.configure(text=self.current[self.current_index])
 
 
 def parse_args():
@@ -124,7 +130,7 @@ def parse_args():
     return ap.parse_args()
 
 def main():
-    import sys
+    import sys, csv
 
     options = parse_args()
     if options.version:
@@ -132,8 +138,9 @@ def main():
         sys.exit(0)
 
     with open(options.filename) as infile:
-        data = infile.read()
-        data = [s.decode("utf-8") for s in data.splitlines()]
+        reader = csv.reader(infile)
+        data = [tuple([col.decode("utf-8") for col in row])
+                for row in reader]
 
     root = Tk()
     root.title(_("Kanji"))
