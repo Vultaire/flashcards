@@ -16,6 +16,11 @@ refreshing every 30 seconds or so.  The window can be set as
 always-on-top, allowing you to passively study while working on other
 tasks.
 
+"Flippable" cards can be created by writing the word list as a CSV
+file.  Each card is represented by one CSV line, containing one or
+more comma-separated values.  To flip, just click the window to go to
+the next value for the card.  `1`_
+
 All options are configurable via the command line.  This is
 intentional: I don't want a lot of GUI code in this application, and
 I'd like to keep usage of screen real estate to a minimum.
@@ -61,3 +66,10 @@ Help
                           (Default: 30)
     -t, --on-top          Make the window stay always on top.
     -v, --version         Show version and exit.
+
+Footnotes
+=========
+
+.. [1] For advanced users, Excel-style CSV formatting is used, so it
+   is possible to include quotation marks or commas in a value.
+   double-quotes are used for both escaping and quoting values.
