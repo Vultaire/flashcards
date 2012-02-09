@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Kanji
+Flash Cards
 
 Author: Paul Goins <general@vultaire.net>
 License: GNU GPL v2 or later

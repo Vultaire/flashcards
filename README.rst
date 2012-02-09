@@ -1,11 +1,14 @@
-=======
- Kanji
-=======
-A simple study program for students of Japanese
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=============
+ Flash Cards
+=============
+A simple flash card program
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Author: Paul Goins
 :License: GNU General Public License, Version 2 or Later
+
+**Note:** this project was formerly known as "Kanji", but has been
+renamed to reflect its now more general target audience.
 
 Summary
 =======
@@ -33,8 +36,7 @@ Requirements
 ============
 
 You must have Python 2.7 with Tkinter, or Python 2.6 with Tkinter and
-argparse.  The program has been tested to various degrees on Windows
-and Linux.
+argparse.  The program has been tested on both Windows and Linux.
 
 **Note:** This tool **must** have its arguments supplied via the
 command line, or via a wrapper script; there are no interactive
@@ -45,8 +47,9 @@ Help
 
 ::
 
-  usage: kanji.py [-h] [-f FONT_FACE] [-s FONT_SIZE] [-i INTERVAL] [-t] [-v]
-                  filename
+  usage: flashcards.py [-h] [-f FONT_FACE] [-s FONT_SIZE] [-i INTERVAL] [-t]
+                       [-v]
+                       filename
   
   Randomly displays characters or words in a window, refreshing every 30 seconds
   or so.
