@@ -11,9 +11,9 @@ License: GNU GPL v2 or later
 
 from Tkinter import Tk, Frame, Label
 import argparse, os, gettext, random
-gettext.install("net.vultaire.kanji")
+gettext.install("net.vultaire.flashcards")
 
-PROGRAM_NAME="Kanji"
+PROGRAM_NAME=_("Flash Cards")
 VERSION="0.2"
 
 
@@ -146,7 +146,7 @@ def main():
                 for row in reader if len(row) > 0]
 
     root = Tk()
-    root.title(_("Kanji"))
+    root.title(PROGRAM_NAME)
     window = MainWindow(root, data, options.interval, options.font_face,
         options.font_size, options.on_top)
     root.mainloop()
