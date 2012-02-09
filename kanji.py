@@ -31,7 +31,6 @@ class MainWindow(object):
 
         font = (font_face, font_size)
         self.kanji = Label(frame, font=font)
-        self.kanji.bind("<Button-1>", self.on_click)
         self.kanji.pack()
 
         # Kanji refresh interval, in seconds
@@ -48,6 +47,10 @@ class MainWindow(object):
 
         if on_top:
             self.root.wm_attributes("-topmost", 1)
+
+        # Bind events
+        self.root.bind("<Button-1>", self.on_click)
+        self.root.bind("<Key-Return>", self.on_click)
 
     def reset_kanji(self):
         """
