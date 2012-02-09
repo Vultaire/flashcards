@@ -30,10 +30,10 @@ class MainWindow(object):
         frame.pack()
 
         font = (font_face, font_size)
-        self.kanji = Label(frame, font=font)
-        self.kanji.pack()
+        self.card = Label(frame, font=font)
+        self.card.pack()
 
-        # Kanji refresh interval, in seconds
+        # Card refresh interval, in seconds
         self.refresh_interval = interval
 
         # Data for tracking
@@ -41,75 +41,75 @@ class MainWindow(object):
         self.pending = []
         self.current = None
 
-        # Update kanji tracking
-        self.reset_kanji()
-        self.update_kanji()
+        # Update card tracking
+        self.reset_card()
+        self.update_card()
 
         if on_top:
             self.root.wm_attributes("-topmost", 1)
 
         # Bind events
-        self.root.bind("<Button-1>", self.on_click)
-        self.root.bind("<Key-Return>", self.on_click)
+        self.root.bind("<Button-1>", self.flip_card)
+        self.root.bind("<Key-Return>", self.flip_card)
 
-    def reset_kanji(self):
+    def reset_card(self):
         """
-        Resets the pending list of kanji.
+        Resets the pending list of cards.
 
         This method will automatically filter out duplicate entries.
 
         """
         self.pending = list(set(self.data[:]))
 
-    def pull_next_kanji(self):
+    def pull_next_card(self):
         """
-        Pulls the next kanji from the kanji list.
+        Pulls the next card from the card list.
 
-        This method tracks the current kanji and will avoid pulling
-        the same kanji two times in a row (unless there's only one
-        kanji left to pull).
+        This method tracks the current card and will avoid pulling
+        the same card two times in a row (unless there's only one
+        card left to pull).
 
-        Returns the next kanji.  The value is also set as
+        Returns the next card.  The value is also set as
         self.current.
 
         """
-        kanji = self.current
+        card = self.current
         if len(self.pending) < 1:
             raise EmptyList()
         elif len(self.pending) == 1:
             index = 0
-            kanji = self.pending[0]
+            card = self.pending[0]
         else:
-            while kanji == self.current:
+            while card == self.current:
                 index = random.randint(0, len(self.pending) - 1)
-                kanji = self.pending[index]
+                card = self.pending[index]
 
         del self.pending[index]
 
         if len(self.pending) < 1:
-            self.reset_kanji()
+            self.reset_card()
 
-        self.current = kanji
+        self.current = card
         self.current_index = 0
-        return kanji
+        return card
 
-    def update_kanji(self):
+    def update_card(self):
         """
-        Pulls the next kanji and updates the GUI.
+        Pulls the next card and updates the GUI.
 
         This is a self-recurring call.  It should only be called at
         the beginning of the application.
 
         """
-        kanji = self.pull_next_kanji()
-        self.kanji.configure(text=kanji[0])
+        card = self.pull_next_card()
+        self.card.configure(text=card[0])
 
         refresh_ms = int(self.refresh_interval * 1000)
-        self.root.after(refresh_ms, self.update_kanji)
+        self.root.after(refresh_ms, self.update_card)
 
-    def on_click(self, event):
+    def flip_card(self, event):
         self.current_index = (self.current_index + 1) % len(self.current)
-        self.kanji.configure(text=self.current[self.current_index])
+        self.card.configure(text=self.current[self.current_index])
 
 
 def parse_args():
