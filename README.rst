@@ -45,6 +45,9 @@ GUI-based dialogs for telling the program what to do.
 Help
 ====
 
+Usage
+-----
+
 ::
 
   usage: flashcards.py [-h] [-f FONT_FACE] [-s FONT_SIZE] [-i INTERVAL] [-t]
@@ -69,6 +72,12 @@ Help
                           (Default: 30)
     -t, --on-top          Make the window stay always on top.
     -v, --version         Show version and exit.
+
+In-program keybindings
+----------------------
+
+| Enter, space bar or left click: **flip forward**
+| Backspace or right click: **flip backward**
 
 Footnotes
 =========

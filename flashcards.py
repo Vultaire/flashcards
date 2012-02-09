@@ -49,8 +49,12 @@ class MainWindow(object):
             self.root.wm_attributes("-topmost", 1)
 
         # Bind events
-        self.root.bind("<Button-1>", self.flip_card)
-        self.root.bind("<Key-Return>", self.flip_card)
+        self.root.bind("<Button-1>", self.flip_forward)
+        self.root.bind("<Key-Return>", self.flip_forward)
+        self.root.bind("<Key-space>", self.flip_forward)
+
+        self.root.bind("<Button-3>", self.flip_backward)
+        self.root.bind("<Key-BackSpace>", self.flip_backward)
 
     def reset_card(self):
         """
@@ -107,10 +111,13 @@ class MainWindow(object):
         refresh_ms = int(self.refresh_interval * 1000)
         self.root.after(refresh_ms, self.update_card)
 
-    def flip_card(self, event):
+    def flip_forward(self, event):
         self.current_index = (self.current_index + 1) % len(self.current)
         self.card.configure(text=self.current[self.current_index])
 
+    def flip_backward(self, event):
+        self.current_index = (self.current_index - 1) % len(self.current)
+        self.card.configure(text=self.current[self.current_index])
 
 def parse_args():
     ap = argparse.ArgumentParser(
